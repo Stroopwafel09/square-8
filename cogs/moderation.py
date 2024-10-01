@@ -36,7 +36,7 @@ class Moderation(commands.Cog, name="moderation"):
     @app_commands.command(name="nick", description="Change the nickname of a user on a server.")
     @app_commands.checks.has_permissions(manage_nicknames=True)
     @app_commands.describe(user="The user that should have a new nickname.", nickname="The new nickname that should be set.")
-    async def nick(self, interaction: discord.Interaction, user: discord.User, , nickname: str = None) -> None:
+    async def nick(self, interaction: discord.Interaction, user: discord.User, nickname: str = None) -> None:
         """Change the nickname of a user on a server."""
         member = interaction.guild.get_member(user.id) or await interaction.guild.fetch_member(user.id)
         try:
@@ -50,7 +50,7 @@ class Moderation(commands.Cog, name="moderation"):
     @app_commands.command(name="ban", description="Bans a user from the server.")
     @app_commands.checks.has_permissions(ban_members=True)
     @app_commands.describe(user="The user that should be banned.", reason="The reason why the user should be banned.")
-    async def ban(self, interaction: discord.Interaction, user: discord.User, *, reason: str = "Not specified") -> None:
+    async def ban(self, interaction: discord.Interaction, user: discord.User, reason: str = "Not specified") -> None:
         """Bans a user from the server."""
         member = interaction.guild.get_member(user.id) or await interaction.guild.fetch_member(user.id)
         try:
