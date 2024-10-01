@@ -12,6 +12,7 @@ import os
 import platform
 import random
 import sys
+import webserver
 
 import aiosqlite
 import discord
@@ -291,3 +292,4 @@ load_dotenv()
 
 bot = DiscordBot()
 bot.run(os.getenv("TOKEN"))
+webserver.keep_alive()
