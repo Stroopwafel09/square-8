@@ -135,38 +135,44 @@ async def purge(self, interaction: discord.Interaction, amount: int) -> None:
     await interaction.followup.send(embed=embed)
 
 
-@hackban.command(name="hackban", description="Bans a user without the user having to be in the server.")
-@app_commands.checks.has_permissions(ban_members=True)
+@commands.hybrid_command(
+    name="hackban",
+    description="Bans a user without the user having to be in the server."
+)
+@commands.has_permissions(ban_members=True)
 @app_commands.describe(user_id="The user ID that should be banned.", reason="The reason why the user should be banned.")
-async def hackban(self, interaction: discord.Interaction, user_id: str, *, reason: str = "Not specified") -> None:
+async def hackban(self, context: commands.Context, user_id: str, *, reason: str = "Not specified") -> None:
     """Bans a user without the user having to be in the server."""
     try:
-        await interaction.guild.ban(discord.Object(id=user_id), reason=reason)
+        await context.guild.ban(discord.Object(id=user_id), reason=reason)
         user = self.bot.get_user(int(user_id)) or await self.bot.fetch_user(int(user_id))
         embed = discord.Embed(
-            description=f"**{user}** (ID: {user_id}) was banned by **{interaction.user}**!",
+            description=f"**{user}** (ID: {user_id}) was banned by **{context.author}**!",
             color=0xBEBEFE,
         )
         embed.add_field(name="Reason:", value=reason)
-        await interaction.response.send_message(embed=embed)
+        await context.send(embed=embed)
     except Exception:
         embed = discord.Embed(
             description="An error occurred while trying to ban the user. Make sure the ID is valid and corresponds to an existing user.",
             color=0xE02B2B,
         )
-        await interaction.response.send_message(embed=embed)
+        await context.send(embed=embed)
 
-@app_commands.command(name="archive", description="Archives in a text file the last messages with a chosen limit of messages.")
-@app_commands.checks.has_permissions(manage_messages=True)
+@commands.hybrid_command(
+    name="archive",
+    description="Archives in a text file the last messages with a chosen limit of messages."
+)
+@commands.has_permissions(manage_messages=True)
 @app_commands.describe(limit="The limit of messages that should be archived.")
-async def archive(self, interaction: discord.Interaction, limit: int = 10) -> None:
+async def archive(self, context: commands.Context, limit: int = 10) -> None:
     """Archives in a text file the last messages with a chosen limit of messages."""
-    log_file = f"{interaction.channel.id}.log"
+    log_file = f"{context.channel.id}.log"
     with open(log_file, "w", encoding="UTF-8") as f:
         f.write(
-            f'Archived messages from: #{interaction.channel} ({interaction.channel.id}) in the guild "{interaction.guild}" ({interaction.guild.id}) at {datetime.now().strftime("%d.%m.%Y %H:%M:%S")}\n'
+            f'Archived messages from: #{context.channel} ({context.channel.id}) in the guild "{context.guild}" ({context.guild.id}) at {datetime.now().strftime("%d.%m.%Y %H:%M:%S")}\n'
         )
-        async for message in interaction.channel.history(limit=limit, before=interaction.message):
+        async for message in context.channel.history(limit=limit, before=context.message):
             attachments = [attachment.url for attachment in message.attachments]
             attachments_text = (
                 f"[Attached File{'s' if len(attachments) >= 2 else ''}: {', '.join(attachments)}]"
@@ -176,8 +182,9 @@ async def archive(self, interaction: discord.Interaction, limit: int = 10) -> No
                 f"{message.created_at.strftime('%d.%m.%Y %H:%M:%S')} {message.author} {message.id}: {message.clean_content} {attachments_text}\n"
             )
     file = discord.File(log_file)
-    await interaction.response.send_message(file=file)
+    await context.send(file=file)
     os.remove(log_file)
+ile)
 
 
     # Additional commands (warning, purge, etc.) can be similarly converted to slash commands.
