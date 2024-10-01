@@ -13,7 +13,7 @@ class Moderation(commands.Cog, name="moderation"):
     @app_commands.command(name="kick", description="Kick a user out of the server.")
     @app_commands.checks.has_permissions(kick_members=True)
     @app_commands.describe(user="The user that should be kicked.", reason="The reason why the user should be kicked.")
-    async def kick(self, interaction: discord.Interaction, user: discord.User, , reason: str = "Not specified") -> None:
+    async def kick(self, interaction: discord.Interaction, user: discord.User, reason: str = "Not specified") -> None:
         """Kick a user out of the server."""
         member = interaction.guild.get_member(user.id) or await interaction.guild.fetch_member(user.id)
         if member.guild_permissions.administrator:
