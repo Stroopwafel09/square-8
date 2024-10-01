@@ -184,7 +184,7 @@ async def archive(self, context: commands.Context, limit: int = 10) -> None:
     file = discord.File(log_file)
     await context.send(file=file)
     os.remove(log_file)
-ile)
+
 
 
     # Additional commands (warning, purge, etc.) can be similarly converted to slash commands.
