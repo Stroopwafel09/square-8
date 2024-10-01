@@ -9,7 +9,7 @@ class Moderation(commands.Cog, name="moderation"):
     def init(self, bot) -> None:
         self.bot = bot
 
-   @app_commands.command(name="kick", description="Kick a user out of the server.")
+@app_commands.command(name="kick", description="Kick a user out of the server.")
 @app_commands.checks.has_permissions(kick_members=True)
 @app_commands.describe(user="The user that should be kicked.", reason="The reason why the user should be kicked.")
 async def kick(self, interaction: discord.Interaction, user: discord.User, *, reason: str = "Not specified") -> None:
@@ -33,7 +33,7 @@ async def kick(self, interaction: discord.Interaction, user: discord.User, *, re
             await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name="nick", description="Change the nickname of a user on a server.")
+@app_commands.command(name="nick", description="Change the nickname of a user on a server.")
 @app_commands.checks.has_permissions(manage_nicknames=True)
 @app_commands.describe(user="The user that should have a new nickname.", nickname="The new nickname that should be set.")
 async def nick(self, interaction: discord.Interaction, user: discord.User, *, nickname: str = None) -> None:
@@ -48,7 +48,7 @@ async def nick(self, interaction: discord.Interaction, user: discord.User, *, ni
         await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name="ban", description="Bans a user from the server.")
+@app_commands.command(name="ban", description="Bans a user from the server.")
 @app_commands.checks.has_permissions(ban_members=True)
 @app_commands.describe(user="The user that should be banned.", reason="The reason why the user should be banned.")
 async def ban(self, interaction: discord.Interaction, user: discord.User, *, reason: str = "Not specified") -> None:
